@@ -105,7 +105,7 @@ public class LoginPage extends BasePage {
         return this;
     }
 
-    public LoginPage checkForgotPasswordButtonPresented(){
+    public LoginPage checkForgotPasswordButtonPresence(){
         Assert.assertTrue("На странице не обнаружена ссылка восстановления пароля",
                 isElementPresented(By.cssSelector(LoginPageLocator.FORGOT_PASSWORD_BUTTON_CSS_SELECTOR)));
         return this;
