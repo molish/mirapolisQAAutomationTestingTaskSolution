@@ -13,7 +13,7 @@ public class UserMainPage extends BasePage {
         super(driver);
     }
 
-    private static final int BASE_LOADING_TIMEOUT = 6;
+    private static final int BASE_LOADING_TIMEOUT = 10;
 
     @FindBy(css = UserMainPageLocator.USER_AVATAR_CSS_SELECTOR)
     private WebElement userAvatar;

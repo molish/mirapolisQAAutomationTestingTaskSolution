@@ -74,7 +74,7 @@ public class LoginPage extends BasePage {
     }
 
     public LoginPage inputPassword(String password) {
-        passwordInputField.sendKeys();
+        passwordInputField.sendKeys(password);
         return this;
     }
 

@@ -1,58 +1,45 @@
 package org.example.tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.example.pages.LoginPage;
 import org.example.pages.UserMainPage;
 import org.example.pages.attributesconstants.TypeAttributeValues;
 import org.example.util.ConfProperties;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.time.Duration;
+public class LoginUserTest extends BaseTest {
 
-public class LoginUserTest extends BaseTest{
+    private static final String WRONG_DATA_FOR_AUTH_MESSAGE = "Неверные данные для авторизации.";
+    private static final String TESTED_USER_NAME = "Фомина Елена Сергеевна";
 
-    @ParameterizedTest
-    @CsvSource({"fominaelena, 1P73BP4Z, Фомина Елена Сергеевна"    })
     @Test
-    public void userCanLoginTest(String userLogin, String userPassword, String expectedUserName){
+    public void userCanLoginTest() {
         loginPage.checkLoginFormPresence()
                 .checkInputLoginFieldPresence()
                 .checkInputPasswordFieldPresence()
                 .checkLoginButtonPresence()
-                .inputLogin(userLogin)
-                .inputPassword(userPassword)
+                .inputLogin(ConfProperties.getProperty("login"))
+                .inputPassword(ConfProperties.getProperty("password"))
                 .clickLoginButton();
         UserMainPage userMainPage = new UserMainPage(loginPage.driver);
         userMainPage.checkUserAvatarPresence()
                 .checkUserNamePresence()
-                .checkUserNameIs(expectedUserName);
+                .checkUserNameIs(TESTED_USER_NAME);
     }
 
-    @ParameterizedTest
-    @CsvSource({"fominaelena, wjnfiwofq, Неверные данные для авторизации.",
-            "wedwedwedqf, 1P73BP4Z, Неверные данные для авторизации."
-    })
     @Test
-    public void userSeeAlertWhenPasswordOrLoginWrongTest(String userLogin, String userPassword, String expectedAlertMessage){
+    public void userSeeAlertWhenPasswordWrongTest() {
         loginPage.checkLoginFormPresence()
                 .checkInputLoginFieldPresence()
                 .checkInputPasswordFieldPresence()
                 .checkLoginButtonPresence()
-                .inputLogin(userLogin)
-                .inputPassword(userPassword)
+                .inputLogin(ConfProperties.getProperty("login"))
+                .inputPassword(ConfProperties.getProperty("wrongPassword"))
                 .clickLoginButton()
                 .checkAlertMessagePresence()
-                .checkAlertMessageEqualsTo(expectedAlertMessage);
+                .checkAlertMessageEqualsTo(WRONG_DATA_FOR_AUTH_MESSAGE);
     }
 
     @Test
-    public void userCanSeeInputingPasswordTest(){
+    public void userCanSeeInputingPasswordTest() {
         loginPage.checkLoginFormPresence()
                 .checkInputPasswordFieldPresence()
                 .checkShowPasswordButtonPresence()
@@ -60,32 +47,24 @@ public class LoginUserTest extends BaseTest{
                 .checkInputPasswordFieldAttributeTypeBecome(TypeAttributeValues.TEXT);
     }
 
-    @ParameterizedTest
-    @CsvSource({"wjnfiwofq, Неверные данные для авторизации.",
-            "1P73BP4Z, Неверные данные для авторизации."
-    })
     @Test
-    public void userDontInputLoginTest(String password, String expectedAlertMessage){
+    public void userDontInputLoginTest() {
         loginPage.checkLoginFormPresence()
                 .checkInputPasswordFieldPresence()
-                .inputPassword(password)
+                .inputPassword(ConfProperties.getProperty("password"))
                 .clickLoginButton()
                 .checkAlertMessagePresence()
-                .checkAlertMessageEqualsTo(expectedAlertMessage);
+                .checkAlertMessageEqualsTo(WRONG_DATA_FOR_AUTH_MESSAGE);
     }
 
-    @ParameterizedTest
-    @CsvSource({"fominaelena, Неверные данные для авторизации.",
-            "wedwedwedqf, Неверные данные для авторизации."
-    })
     @Test
-    public void userDontInputPasswordTest(String login, String expectedAlertMessage){
+    public void userDontInputPasswordTest() {
         loginPage.checkLoginFormPresence()
                 .checkInputLoginFieldPresence()
-                .inputLogin(login)
+                .inputLogin(ConfProperties.getProperty("login"))
                 .clickLoginButton()
                 .checkAlertMessagePresence()
-                .checkAlertMessageEqualsTo(expectedAlertMessage);
+                .checkAlertMessageEqualsTo(WRONG_DATA_FOR_AUTH_MESSAGE);
     }
 
 }
